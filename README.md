@@ -44,7 +44,18 @@ This repository contains the code used for [HalluciDet: Hallucinating RGB Modali
 ![HalluciDet FasterRCNN](./resources/test_batch.gif)
 
 
-  
+
+# Cite our work
+
+@inproceedings{medeiros2024hallucidet,
+  title={HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information},
+  author={Medeiros, Heitor Rapela and Pena, Fidel A Guerrero and Aminbeidokhti, Masih and Dubail, Thomas and Granger, Eric and Pedersoli, Marco},
+  booktitle={Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision},
+  pages={1444--1453},
+  year={2024}
+}
+
+
 # References
 
 
