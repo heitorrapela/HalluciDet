@@ -1,0 +1,479 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script>
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+
+<style type="text/css">
+	body {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+		font-weight: 300;
+		font-size: 18px;
+		margin-left: auto;
+		margin-right: auto;
+		width: 1100px;
+	}
+
+	h1 {
+		font-weight: 300;
+	}
+
+	.disclaimerbox {
+		background-color: #eee;
+		border: 1px solid #eeeeee;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+		padding: 20px;
+	}
+
+	video.header-vid {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+	}
+
+	img.header-img {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+	}
+
+	img.rounded {
+		border: 1px solid #eeeeee;
+		border-radius: 10px;
+		-moz-border-radius: 10px;
+		-webkit-border-radius: 10px;
+	}
+
+	a:link,
+	a:visited {
+		color: #1367a7;
+		text-decoration: none;
+	}
+
+	a:hover {
+		color: #208799;
+	}
+
+	td.dl-link {
+		height: 160px;
+		text-align: center;
+		font-size: 22px;
+	}
+
+	.layered-paper-big {
+		/* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+			0px 0px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The top layer shadow */
+			5px 5px 0 0px #fff,
+			/* The second layer */
+			5px 5px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The second layer shadow */
+			10px 10px 0 0px #fff,
+			/* The third layer */
+			10px 10px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The third layer shadow */
+			15px 15px 0 0px #fff,
+			/* The fourth layer */
+			15px 15px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The fourth layer shadow */
+			20px 20px 0 0px #fff,
+			/* The fifth layer */
+			20px 20px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The fifth layer shadow */
+			25px 25px 0 0px #fff,
+			/* The fifth layer */
+			25px 25px 1px 1px rgba(0, 0, 0, 0.35);
+		/* The fifth layer shadow */
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+	.paper-big {
+		/* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+			0px 0px 1px 1px rgba(0, 0, 0, 0.35);
+		/* The top layer shadow */
+
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+
+	.layered-paper {
+		/* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+			0px 0px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The top layer shadow */
+			5px 5px 0 0px #fff,
+			/* The second layer */
+			5px 5px 1px 1px rgba(0, 0, 0, 0.35),
+			/* The second layer shadow */
+			10px 10px 0 0px #fff,
+			/* The third layer */
+			10px 10px 1px 1px rgba(0, 0, 0, 0.35);
+		/* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+
+	.vert-cent {
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	hr {
+		border: 0;
+		height: 1px;
+		background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+	}
+</style>
+
+<html>
+
+<head>
+	<title>HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information</title>
+	<meta property="og:image" content="" />
+	<meta property="og:title" content="HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information" />
+</head>
+
+<body>
+	<br>
+	<center>
+		<span style="font-size:42px">HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information</span>
+		<table align=center width=600px>
+			<tr>
+
+				<td align=center width=120px>
+					<center>
+						<span style="font-size:24px"><a href="https://heitorrapela.github.io/">Heitor Medeiros</a></span>
+					</center>
+				</td>
+
+				<td align=center width=120px>
+					<center>
+						<span style="font-size:24px"><a href="https://www.linkedin.com/in/fidel-guerrero-pena/">Fidel A.
+								G. Pena</a></span>
+					</center>
+				</td>
+				<td align=center width=120px>
+					<center>
+						<span style="font-size:24px"><a href="https://github.com/Masseeh">Masih Aminbeidokhti</a></span>
+					</center>
+				</td>		
+
+		</table>
+
+		<table align=center width=600px>
+			<tr>
+				<td align=center width=120px>
+					<center>
+						<span style="font-size:24px"><a href="https://github.com/ThomasDubail">Thomas Dubail</a></span>
+					</center>
+				</td>
+				<td align=center width=120px>
+					<center>
+						<span style="font-size:24px"><a
+								href="https://www.etsmtl.ca/en/research/professors/egranger">Eric Granger</a></span>
+					</center>
+				</td>
+
+				<td align=center width=120px>
+					<center>
+						<span style="font-size:24px"><a
+								href="https://www.etsmtl.ca/en/research/professors/mpedersoli/">Marco
+								Pedersoli</a></span>
+					</center>
+				</td>
+		</table>
+		<span style="font-size:30px">WACV 2024 & LXAI@CVPR2024</span>
+
+		<table align=center width=650px>
+			<tr>
+				<!-- <td align=center width=150px>
+	  					<center>
+	  						<span style="font-size:24px"><a href=''> [Demo]</a>
+		  		  		</center>
+		  		  	  </td> -->
+				<td align=center width=150px>
+					<center>
+						<span style="font-size:24px"><a href='https://github.com/heitorrapela/HalluciDet'>
+								[GitHub]</a></span>
+					</center>
+				</td>
+				<!-- <td align=center width=150px>
+	  					<center>
+	  						<span style="font-size:24px"><a href=''> [Talk]</a></span>
+		  		  		</center>
+		  		  	  </td> -->
+				<!-- <td align=center width=150px>
+	  					<center>
+	  						<span style="font-size:24px"><a href=''> [Slides]</a></span>
+		  		  		</center>
+		  		  	  </td> -->
+				<td align=center width=150px>
+					<center>
+						<span style="font-size:24px"><a
+								href='https://openaccess.thecvf.com/content/WACV2024/papers/Medeiros_HalluciDet_Hallucinating_RGB_Modality_for_Person_Detection_Through_Privileged_Information_WACV_2024_paper.pdf'>
+								[Paper]</a></span>
+					</center>
+				</td>
+
+				<td align=center width=150px>
+	  					<center>
+	  						<span style="font-size:24px"><a href='./images/hallucidet_wacv2024_poster.pdf'> [Poster]</a></span>
+		  		  		</center>
+		  		  	  </td>
+
+			</tr>
+			<tr>
+		</table>
+	</center>
+
+	<!--   		  <br><br>
+		  <hr> -->
+
+	<br>
+	
+	<table align=center width=100px>
+		<tr>
+			<td align=center width=75px>
+				<center>
+			<td><a href='https://github.com/heitorrapela/HalluciDet'><img class="round" style="height:220px"
+						src="https://raw.githubusercontent.com/heitorrapela/HalluciDet/main/resources/test_batch.gif" /></a></td>
+			</center>
+		</tr>
+	</table>
+
+	</div>
+	<br><br>
+	<hr>
+
+
+	<table align=center width=850px>
+		<center>
+			<h1>Abstract</h1>
+		</center>
+	</table>
+	A powerful way to adapt a visual recognition model to a new domain is through image translation. 
+	However, common image translation approaches only focus on generating data from the same distribution as the target domain. 
+	Given a cross-modal application, such as pedestrian detection from aerial images, with a considerable shift in data distribution between infrared (IR) to visible (RGB) images, a translation focused on generation might lead to poor performance as the loss focuses on irrelevant details for the task. 
+	In this paper, we propose HalluciDet, an IR-RGB image translation model for object detection. 
+	Instead of focusing on reconstructing the original image on the IR modality, it seeks to reduce the detection loss of an RGB detector, and therefore avoids the need to access RGB data. 
+	This model produces a new image representation that enhances objects of interest in the scene and greatly improves detection performance. 
+	We empirically compare our approach against state-of-the-art methods for image translation and for fine-tuning on IR, and show that our HalluciDet improves detection accuracy in most cases by exploiting the privileged information encoded in a pre-trained RGB detector. 
+	<br><br>
+	<hr>
+
+
+	<center>
+		<h1>Try our code</h1>
+	</center>
+
+	<table align=center width=850px>
+		<tr>
+			<td width=400px>
+				<center>
+					<a href="https://github.com/heitorrapela/HalluciDet"><img class="rounded" src="./images/hallucidet2.png" height="400px"></img>
+						</href></a><br>
+				</center>
+			</td>
+		</tr>
+		<td width=400px>
+			<br>
+			<center>
+				<span style="font-size:14px"><i>HalluciDet leverages privileged information for modality hallucination with pre-trained detectors. During training, the hallucination network learns how to use the privileged information encoded by the RGB detector to translate the IR image into a new hallucination
+					modality representation. Then, during inference, the model provides better IR detection using the translated modality.</i>
+			</center>
+		</td>
+	</table>
+
+
+
+
+
+	<table align=center width=850px>
+		<tr>
+			<td width=400px>
+				<center>
+					<a href="./images/hallucidet.png"><img class="rounded" src="./images/hallucidet.png" height="500px"></img>
+						</href></a><br>
+				</center>
+			</td>
+		</tr>
+		<td width=400px>
+			<br>
+			<center>
+				<span style="font-size:14px"><i>Example of detections using baseline and HalluciDet methods on LLVIP data. 
+					(a) Original RGB image with ground truth annotations (yellow). (b) IR image with corresponding detections of a fine-tuned model (green). (c) Translated image from
+					IR to RGB produced by FastCUT and corresponding RGB detections (green). (d) Hallucinated image produced by our method and RGB 
+					detections (green); HalluciDet does not seek to reconstruct all image details but only to enhance the objects of interest.</i>
+			</center>
+		</td>
+
+	</table>
+
+	<br>
+	<hr>
+
+
+	<table align=center width=425px>
+		<center>
+			<h1>Paper and Supplementary Material</h1>
+		</center>
+		<tr>
+
+			<td><a
+					href="https://openaccess.thecvf.com/content/WACV2024/papers/Medeiros_HalluciDet_Hallucinating_RGB_Modality_for_Person_Detection_Through_Privileged_Information_WACV_2024_paper.pdf"><img
+						class="layered-paper-big" style="height:175px" src="./images/paper_pdf_thumb.png" /></a></td>
+			<td><span style="font-size:14pt">
+					Heitor Rapela Medeiros, Fidel A. Guerrero Pena, Masih Aminbeidokhti, Thomas Dubail, Eric Granger, Marco Pedersoli
+					<br><br>
+					HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information.<br>
+					In WACV, 2024.<br><br>
+					(hosted on <a href="https://openaccess.thecvf.com/content/WACV2024/html/Medeiros_HalluciDet_Hallucinating_RGB_Modality_for_Person_Detection_Through_Privileged_Information_WACV_2024_paper.html">WACV2024</a>)</a>
+			</td>
+			</td>
+		</tr>
+	</table>
+	<br>
+
+
+	<table align=center width=600px>
+		<tr>
+			<td><span style="font-size:14pt">
+					<center>
+						<a href="./bibtex.txt">[Bibtex]</a>
+					</center>
+			</td>
+		</tr>
+	</table>
+
+	<hr>
+
+	<a name="bw_legacy"></a>
+	<center>
+		<h1>Experiments and Results</h1>
+	</center>
+
+	<left>
+		<h3>- Main Results Against I2I Methods.</h3>
+	</left>
+	<table align=center width=850px>
+		<tr>
+			<td width=400px>
+				<center>
+					<a href="./images/i2i_methods.png"><img class="rounded" src="./images/i2i_methods.png" height="500px"></img></href>
+						</a><br>
+				</center>
+			</td>
+		</tr>
+	</table>
+
+	<br>
+
+	<left>
+		<h3>- Qualitative Results</h3>
+	</left>
+
+	<table align=center width=850px>
+		<tr>
+			<td width=400px>
+				<center>
+					<a href="./images/qualitative_results.png"><img class="rounded" src="./images/qualitative_results.png"
+							height="500px"></img></href></a><br>
+				</center>
+			</td>
+		</tr>
+
+	</table>
+	<br><br><br><br>
+
+
+	<left>
+		<h3>- Ablation: Reducing training samples. </h3>
+	</left>
+
+	<table align=center width=850px>
+		<tr>
+			<td width=400px>
+				<center>
+					<a href="./images/reducing_samples.png"><img class="rounded" src="./images/reducing_samples.png"
+							height="450px"></img></href></a><br>
+				</center>
+			</td>
+		</tr>
+
+	</table>
+
+	<br><br><br><br>
+
+	<br>
+	<hr>
+	<br>
+
+	<table align=center width=1100px>
+		<tr>
+			<td width=400px>
+				<left>
+					<center>
+						<h1>Acknowledgements</h1>
+					</center>
+
+					This work was supported by Distech Controls Inc., the Natural Sciences and Engineering Research
+					Council of Canada, and the Digital Research Alliance of Canada.
+				</left>
+			</td>
+		</tr>
+	</table>
+
+
+	<br>
+	<hr>
+	<br>
+
+	<table align=center width=850px>
+		<br>
+		<tr>
+			<td width=400px>
+				<center>
+					<a href="https://www.etsmtl.ca/"><img class="rounded" src="./images/ets.png" height="100px"></img>
+						</href></a><br>
+				</center>
+			</td>
+			<td width=400px>
+				<center>
+					<a href="https://liviamtl.ca/"><img class="rounded" src="./images/livia.png" height="100px"></img>
+						</href></a><br>
+				</center>
+			</td>
+		</tr>
+
+
+
+	</table>
+
+	<br><br>
+
+	<script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date(); a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-75863369-1', 'auto');
+		ga('send', 'pageview');
+
+	</script>
+
+</body>
+
+</html>
