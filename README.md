@@ -1,10 +1,10 @@
 
-# HalluciDet (Accepted WACV2024)
+# HalluciDet [WACV2024 and @LatinX/CVPR2024]
 
 
 ![HalluciDet Model](./resources/hallucidet.png)
 
-This repository contains the code used for [HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information 🔗](https://arxiv.org/abs/2310.04662) by Heitor Rapela Medeiros, Fidel A. Guerrero Pena, Masih Aminbeidokhti, Thomas Dubail, Eric Granger, Marco Pedersoli **(WACV 2024)**.
+This repository contains the code used for [HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information 🔗](https://arxiv.org/abs/2310.04662) by Heitor Rapela Medeiros, Fidel A. Guerrero Pena, Masih Aminbeidokhti, Thomas Dubail, Eric Granger, Marco Pedersoli **(WACV 2024)**. Recently, this work was also accepted as an extended abstract in the [LatinX in CV (LXCV) @CVPR2024 🔗](https://www.latinxinai.org/cvpr-2024)
 
 
 
@@ -44,6 +44,18 @@ This repository contains the code used for [HalluciDet: Hallucinating RGB Modali
 ![HalluciDet FasterRCNN](./resources/test_batch.gif)
 
 
+# Talks about this work
+
+**WACV2024 Recorded Video**
+
+
+[![WACV2024 Recorded Video](https://img.youtube.com/vi/BEFi_zkG8Yc/0.jpg)](https://www.youtube.com/watch?v=BEFi_zkG8Yc)
+
+**Talk at [LIVIA](https://liviamtl.ca/)**
+
+
+[![Talk at LIVIA](https://img.youtube.com/vi/spH6mHMHapw/0.jpg)](https://youtu.be/spH6mHMHapw)
+
 
 # Cite our work
 
@@ -59,4 +71,4 @@ This repository contains the code used for [HalluciDet: Hallucinating RGB Modali
 # References
 
 
-Really thanks for the great open source community that provided good libraries
+Really thanks for the great open source community that provided good libraries.
