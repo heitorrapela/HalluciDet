@@ -10,7 +10,6 @@ from src.utils.utils import Utils
 import wandb
 import torch.nn as nn
 
-from src.losses import losses
 from src.metrics import metrics
 import numpy as np
 from src.dataloader.dataloaderPL import MultiModalDataModule

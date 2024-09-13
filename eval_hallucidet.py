@@ -10,7 +10,6 @@ from src.utils.utils import Utils
 import wandb
 import torch.nn as nn
 
-from src.losses import losses
 from src.metrics import metrics
 import numpy as np
 from src.dataloader.dataloaderPL import MultiModalDataModule
@@ -111,9 +110,11 @@ class EncoderDecoderLit(pl.LightningModule):
                                                 modality=args.modality,
                                             ).detector
 
-        self.train_metrics_detection_map_ir = metrics.Detection().map
-        self.valid_metrics_detection_map_ir = metrics.Detection().map
+        ## Metrics
+        self.test_metrics_detection_map_hall = metrics.Detection().map
+        self.test_metrics_detection_map_rgb = metrics.Detection().map
         self.test_metrics_detection_map_ir = metrics.Detection().map
+
 
 
     def training_step(self, train_batch, batch_idx):
@@ -128,41 +129,7 @@ class EncoderDecoderLit(pl.LightningModule):
 
     def on_validation_epoch_end(self):
         
-        map_rgb = Utils.filter_dictionary(self.valid_metrics_detection_map_rgb.compute(), {'map_50', 'map_75', 'map'})
-        map_hall = Utils.filter_dictionary(self.valid_metrics_detection_map_hall.compute(), {'map_50', 'map_75', 'map'})
-        map_ir = Utils.filter_dictionary(self.valid_metrics_detection_map_ir.compute(), {'map_50', 'map_75', 'map'})
-    
-
-        self.wandb_logger.log({
-                        'valid/metrics/map_rgb': map_rgb,
-                        'valid/metrics/map_hall': map_hall,
-                        'valid/metrics/map_ir': map_ir,
-                        'valid/metrics/step': self.valid_epoch,
-                    })
-
-        if(self.best_valid_map_50 < map_hall['map_50'] and self.current_epoch > 0):
-
-            self.best_valid_map_50 = map_hall['map_50']
-            self.best_valid_epoch = self.current_epoch
-
-            self.wandb_logger.summary["valid/metrics/map_rgb"] = map_rgb
-            self.wandb_logger.summary["valid/metrics/map_hall"] = map_hall
-            self.wandb_logger.summary["valid/metrics/map_ir"] = map_ir
-            self.wandb_logger.summary["valid/metrics/best_epoch"] = self.best_valid_epoch
-            self.wandb_logger.summary["checkpoint_dirpath"] = self.trainer.checkpoint_callback.dirpath
-
-            ckpt_path = os.path.join(
-                self.trainer.checkpoint_callback.dirpath, 'best_encoder_decoder_pl.ckpt'
-            )
-            self.trainer.save_checkpoint(ckpt_path)
-
-        self.log('val_map', map_hall['map'], on_step=False, on_epoch=True, prog_bar=False, logger=True, batch_size=self.batch_size)
-
-        self.valid_metrics_detection_map_rgb.reset()
-        self.valid_metrics_detection_map_hall.reset()
-        self.valid_metrics_detection_map_ir.reset()
-
-        self.valid_epoch += 1
+        return None
 
         
 
@@ -218,36 +185,14 @@ class EncoderDecoderLit(pl.LightningModule):
                                         params=(list([])),
                                         lr=self.lr)
 
-        sch = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min')
-
         return {
             "optimizer": optimizer,
-            "lr_scheduler" : {
-                "scheduler" : sch,
-                "monitor" : "val_loss",
-            }
         }
 
 # Set device
 device = Config.cuda_or_cpu() if args.device is None else args.device
 
-# Model
-# model = EncoderDecoderLit(batch_size=args.batch, 
-#                         wandb_logger=wandb_logger,
-#                         model_name=decoder_backbone, 
-#                         in_channels=Config.EncoderDecoder.in_channels_encoder,
-#                         output_channels=Config.EncoderDecoder.out_channels_decoder, 
-#                         lr=LR,
-#                         loss_pixel=Config.Losses.pixel, 
-#                         loss_perceptual=Config.Losses.perceptual,
-#                         detector_name=Config.Detector.name,
-#                         train_det=Config.Detector.train_det,
-#                         fuse_data=fuse_data,
-#                         scheduler_on=Config.Optimizer.scheduler_on,
-#                         )
 
-
-# if(Config.EncoderDecoder.load_encoder_decoder):
 model = EncoderDecoderLit.load_from_checkpoint(checkpoint_path=Config.EncoderDecoder.encoder_decoder_load_path,
                                             batch_size=args.batch, 
                                             wandb_logger=wandb_logger,
@@ -264,15 +209,6 @@ model = EncoderDecoderLit.load_from_checkpoint(checkpoint_path=Config.EncoderDec
                                             strict=False
                                         )
 
-# saves best model
-checkpoint_best_callback = pl.callbacks.ModelCheckpoint(
-    save_top_k=1,
-    monitor="val_map",
-    mode="max",
-    dirpath=os.path.join('lightning_logs', args.wandb_project, args.wandb_name, "_".join([args.dataset, args.modality, Config.Detector.name])),
-    filename="best",
-)
-
 
 # Training
 trainer = pl.Trainer(
@@ -283,10 +219,10 @@ trainer = pl.Trainer(
                     gradient_clip_algorithm="value",
                     callbacks=[
                             pl.callbacks.RichProgressBar(),
-                            checkpoint_best_callback,
                     ],
-                    deterministic=False,
-                    limit_train_batches=args.limit_train_batches,
+                    deterministic=True,
+                    limit_train_batches=0.03,
+                    limit_val_batches=0.03,
                     num_sanity_val_steps=0,
                     precision=args.precision, # 32 default
                     enable_model_summary=True,
