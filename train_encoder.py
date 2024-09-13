@@ -216,6 +216,7 @@ class EncoderDecoderLit(pl.LightningModule):
         imgs_hallucinated = Utils.normalize_batch_images(imgs_hallucinated.detach().clone())
 
         return {
+            'loss' : {'total': total_loss, 
                 'pixel_rgb': loss_pixel_rgb, 
                 'perceptual_rgb': loss_perceptual_rgb, 
                 'pixel_ir': loss_pixel_ir,
@@ -235,6 +236,7 @@ class EncoderDecoderLit(pl.LightningModule):
                         'imgs_hallucinated': imgs_hallucinated,
                     }
         }
+
 
     def training_step(self, train_batch, batch_idx):
 

@@ -152,9 +152,6 @@ class DetectorLit(pl.LightningModule):
         else:
             imgs_rgb, targets, imgs_ir, targets_ir = train_batch
 
-            if(args.modality == 'concat'):
-                imgs = [Utils.concat_modalities(img_rgb, imgs_ir).squeeze_(0) for (img_rgb, imgs_ir) in zip(imgs_rgb, imgs_ir)]
-
         targets = Utils.batch_targets_for_detector(targets=targets, device=device, detector_name=self.detector_name)
         losses_det, detections = Detector.calculate_loss(self.detector, imgs, targets, train_det=True, model_name=self.detector_name)
         # total_loss = sum(loss for loss in losses_det.values())
@@ -215,8 +212,6 @@ class DetectorLit(pl.LightningModule):
         else:
             imgs_rgb, targets, imgs_ir, targets_ir = val_batch
             
-            if(args.modality == 'concat'):
-                imgs = [Utils.concat_modalities(img_rgb, imgs_ir).squeeze_(0) for (img_rgb, imgs_ir) in zip(imgs_rgb, imgs_ir)]
         
         targets = Utils.batch_targets_for_detector(targets=targets, device=device, detector_name=self.detector_name)
         ## Detector
@@ -297,11 +292,6 @@ class DetectorLit(pl.LightningModule):
             imgs = list(imgs)
             for idx, img in enumerate(imgs):
                 imgs[idx] = Utils.expand_one_channel_to_output_channels(img, 3).squeeze_(0)
-
-        elif(args.modality == 'concat'):
-            imgs = list(imgs_rgb)
-            for idx, (img_rgb, imgs_ir) in enumerate(zip(imgs_rgb, imgs_ir)):
-                imgs[idx] = Utils.concat_modalities(img_rgb, imgs_ir).squeeze_(0)
 
 
         ## Detector
@@ -435,7 +425,7 @@ if __name__ == "__main__":
                                 fixed_transformations=fixed_transformations,
                                 ablation_flag=args.ablation_flag,
         )
-    elif(args.modality == 'both' or args.modality == 'concat' or args.modality == 'fuse'):
+    elif(args.modality == 'both'):
         dm = MultiModalDataModule(
                             dataset=dataset,
                             path_images_train_rgb=Config.Dataset.train_path,
@@ -454,13 +444,6 @@ if __name__ == "__main__":
 
 
     trainer.fit(model, dm)
-
-    trainer.save_checkpoint(os.path.join(trainer.checkpoint_callback.dirpath,
-                                        'detector_pl.ckpt'))
-
-    torch.save(model.detector.state_dict(),  
-                os.path.join(trainer.checkpoint_callback.dirpath, 'detector.bin')
-    )
 
     trainer.test(model, dm, ckpt_path="best")
 

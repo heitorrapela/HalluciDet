@@ -67,7 +67,7 @@ class ToTensor(object):
             image = image.astype("float") / 255.0
 
         assert (
-            image.dtype == np.float and image.min() >= 0 and image.max() <= 1
+            image.dtype == float and image.min() >= 0 and image.max() <= 1
         ), "Please, verify your images are either uint8 (0-255) or float (0.0-1.0)"
 
         return image
