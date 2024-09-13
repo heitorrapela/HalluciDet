@@ -77,7 +77,7 @@ config = dict (
     modality=args.modality,
 )
 
-wandb_logger = wandb.init(project=args.wandb_project, name=args.wandb_name, config=config, tags=args.tags)
+wandb_logger = wandb.init(project=args.wandb_project, name=args.wandb_name, config=config)
 
 class DetectorLit(pl.LightningModule):
     def __init__(self, batch_size=4, wandb_logger=None,

@@ -38,7 +38,7 @@ Config.set_loss_weights(args)
 
 ext = args.ext if args.ext is not None else Config.Dataset.ext
 
-wandb_logger = wandb.init(project=args.wandb_project, name=args.wandb_name, tags=args.tags)
+wandb_logger = wandb.init(project=args.wandb_project, name=args.wandb_name)
 
 fuse_data = args.fuse_data 
 

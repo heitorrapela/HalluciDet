@@ -191,8 +191,6 @@ class Config:
 
         parser.add_argument("--encoder-depth", type=int, default=5, help='Depth of the encoder 3 to 5. (default: 5)')
 
-        parser.add_argument('-t','--tags', nargs='+', help='Pass tag List')
-
         args = parser.parse_args()
 
         return args
