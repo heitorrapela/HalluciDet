@@ -32,9 +32,10 @@ This repository contains the code used for [HalluciDet: Hallucinating RGB Modali
 
 	## For training the initial rgb model that is the baseline (Also you can use our checkpoint, that I am going to update soon)
 	## This is the seed123 result for the fasterrcnn on llvip dataset
-	CUDA_VISIBLE_DEVICES=0 python train_detector.py --eval --pretrained --threshold 0.5 --wandb-project wacv2024 --wandb-name detector_fasterrcnn_rgb_llvip_200ep_changhead_seed123 --detector fasterrcnn --modality rgb --dataset llvip --epochs 200 --batch 16 --seed 123
-	# Train HalluciDet
-	CUDA_VISIBLE_DEVICES=0 python train_encoder.py --eval --pretrained --modality ir --detector-path ./lightning_logs/wacv2024/detector_fasterrcnn_rgb_llvip_200ep_changehead_seed123/llvip_rgb_fasterrcnn/best.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_changehead_seed123 --detector fasterrcnn --dataset llvip --epochs 200 --batch 8 --seed 123
+	CUDA_VISIBLE_DEVICES=0 python train_detector.py --eval --pretrained --wandb-project wacv2024 --wandb-name detector_fasterrcnn_rgb_llvip_200ep_seed123 --detector fasterrcnn --modality rgb --dataset llvip --epochs 200 --batch 16 --seed 123
+
+	## Train HalluciDet
+	CUDA_VISIBLE_DEVICES=0 python train_hallucidet.py --eval --pretrained --modality ir --detector-path ./lightning_logs/wacv2024/detector_fasterrcnn_rgb_llvip_200ep_seed123/llvip_rgb_fasterrcnn/best.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 200 --batch 8 --seed 123
 
   
 
