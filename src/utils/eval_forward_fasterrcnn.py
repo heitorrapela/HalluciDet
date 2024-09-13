@@ -10,7 +10,7 @@ from torchvision.models.detection.rpn import concat_box_prediction_layers
 # Modified code from torchvision to calculate loss during evaluation for FasterRCNN, with this we can weight
 # Original code: https://github.com/pytorch/vision/tree/main/torchvision/models/detection
 
-def eval_forward_fasterrcnn(model, images, targets, train_det=False, model_name='fasterrcnn', debug=False):
+def eval_forward_fasterrcnn(model, images, targets, train_det=False, model_name='fasterrcnn'):
 
     if not train_det:
         model.eval()

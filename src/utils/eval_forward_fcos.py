@@ -8,7 +8,7 @@ import torch.nn.functional as F
 # Modified code from torchvision to calculate loss during evaluation for FCOS, with this we can weight
 # Original code: https://github.com/pytorch/vision/blob/main/torchvision/models/detection/fcos.py
 
-def eval_forward_fcos(model, images, targets, train_det=False, model_name='fcos', debug=False):
+def eval_forward_fcos(model, images, targets, train_det=False, model_name='fcos'):
 
     if not train_det:
         model.eval()

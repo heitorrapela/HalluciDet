@@ -102,7 +102,7 @@ class Detector():
 
 
     @staticmethod
-    def calculate_loss(detector, outs, targets, train_det=False, model_name='fasterrcnn', debug=None):
+    def calculate_loss(detector, outs, targets, train_det=False, model_name='fasterrcnn'):
 
         if('fasterrcnn' in model_name):
             losses_det, detections = eval_forward_fasterrcnn(detector, outs, targets, train_det=train_det, model_name=model_name)

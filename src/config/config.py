@@ -129,8 +129,6 @@ class Config:
 
         parser.add_argument('--wandb-name', type=str, default="detector", help='Wandb Run Name')
 
-        parser.add_argument('--debug',  action='store_true', help='Plot bbox to debug (default: False)')
-
         parser.add_argument('--eval', action='store_true', help='Flag to load pretrained model (default: False)')
 
         parser.add_argument("--batch", type=int, default=16, help="Batch size (default: 16)")

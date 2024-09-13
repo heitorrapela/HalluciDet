@@ -174,13 +174,13 @@ class EncoderDecoderLit(pl.LightningModule):
         
         ## Detector Hallucinated
         train_det = True if (self.train_det == True and step == 'train') else False
-        losses_det, detections_hall = Detector.calculate_loss(self.detector, imgs_hallucinated, targets_ir, train_det=train_det, model_name=self.detector_name, debug=False)
+        losses_det, detections_hall = Detector.calculate_loss(self.detector, imgs_hallucinated, targets_ir, train_det=train_det, model_name=self.detector_name)
 
         ## Detector RGB
-        _, detections_rgb  = Detector.calculate_loss(self.detector, imgs_rgb, targets_rgb, train_det=False, model_name=self.detector_name, debug=True)
+        _, detections_rgb  = Detector.calculate_loss(self.detector, imgs_rgb, targets_rgb, train_det=False, model_name=self.detector_name)
 
         ## Detector IR
-        _, detections_ir = Detector.calculate_loss(self.detector, imgs_ir_three_channel, targets_ir, train_det=False, model_name=self.detector_name, debug=False)
+        _, detections_ir = Detector.calculate_loss(self.detector, imgs_ir_three_channel, targets_ir, train_det=False, model_name=self.detector_name)
 
 
         if 'fasterrcnn' in self.detector_name:
@@ -379,17 +379,17 @@ class EncoderDecoderLit(pl.LightningModule):
 
         imgs_rgb = imgs_rgb.float() # To handle problems with double to float conversion
 
-        _, detections_hall = Detector.calculate_loss(self.detector, imgs_hallucinated, targets_ir, train_det=False, model_name=self.detector_name, debug=False)
+        _, detections_hall = Detector.calculate_loss(self.detector, imgs_hallucinated, targets_ir, train_det=False, model_name=self.detector_name)
         # output_hal_det = torch.Tensor(np.asarray([Utils().plot_each_image(imgs_hallucinated[idx], det, targets_ir[idx], threshold=args.threshold) 
         #                             for idx, det in enumerate(detections_hall)]))
 
         ## Detector RGB
-        _, detections_rgb  = Detector.calculate_loss(self.detector, imgs_rgb, targets_rgb, train_det=False, model_name=self.detector_name, debug=True)
+        _, detections_rgb  = Detector.calculate_loss(self.detector, imgs_rgb, targets_rgb, train_det=False, model_name=self.detector_name)
         # output_rgb_det = torch.Tensor(np.asarray([Utils().plot_each_image(imgs_rgb[idx], det, targets_rgb[idx], threshold=args.threshold) 
         #                             for idx, det in enumerate(detections_rgb)]))
 
         ## Detector IR
-        _, detections_ir = Detector.calculate_loss(self.detector, imgs_ir_three_channel, targets_ir, train_det=False, model_name=self.detector_name, debug=False)
+        _, detections_ir = Detector.calculate_loss(self.detector, imgs_ir_three_channel, targets_ir, train_det=False, model_name=self.detector_name)
         # output_ir_det = torch.Tensor(np.asarray([Utils().plot_each_image(imgs_ir_three_channel[idx], det, targets_ir[idx], threshold=args.threshold) 
         #                             for idx, det in enumerate(detections_ir)]))
 
@@ -508,7 +508,7 @@ trainer = pl.Trainer(
                     ],
                     deterministic=False,
                     limit_train_batches=args.limit_train_batches,
-                    num_sanity_val_steps=0, # debug
+                    num_sanity_val_steps=0,
                     precision=args.precision, # 32 default
                     enable_model_summary=True,
                     logger=False,
