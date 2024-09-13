@@ -58,7 +58,7 @@ class EncoderDecoderLit(pl.LightningModule):
                 wandb_logger=None, model_name='resnet34',
                 in_channels=1, output_channels=3,  lr=0.0001,
                 loss_pixel='mse', loss_perceptual='lpips_alexnet', 
-                detector_name='ssd', train_det=False, fuse_data='none', scheduler_on=False):
+                detector_name='fasterrcnn', train_det=False, fuse_data='none', scheduler_on=False):
         super().__init__()
 
         self.model_name = model_name
@@ -166,7 +166,6 @@ class EncoderDecoderLit(pl.LightningModule):
         ## Encoder / Decoder
         imgs_ir_three_channel = Utils.expand_one_channel_to_output_channels(imgs_ir, self.output_channels)
         imgs_hallucinated = self.encoder_decoder(imgs_ir_three_channel)
-        imgs_hallucinated = Utils.fusion_data(imgs_hallucinated, imgs_ir_three_channel, fuse_data=args.fuse_data)
 
         loss_pixel_rgb = 0.0 if self.loss_pixel == None else self.loss_pixel(imgs_rgb, imgs_hallucinated) * Config.Losses.hparams_losses_weights['pixel_rgb']
         loss_perceptual_rgb = 0.0 if self.loss_perceptual == None else torch.mean(self.loss_perceptual(imgs_rgb, imgs_hallucinated)) * Config.Losses.hparams_losses_weights['perceptual_rgb']
@@ -377,7 +376,6 @@ class EncoderDecoderLit(pl.LightningModule):
 
         imgs_ir_three_channel = Utils.expand_one_channel_to_output_channels(imgs_ir, self.output_channels)
         imgs_hallucinated = self.encoder_decoder(imgs_ir_three_channel)
-        imgs_hallucinated = Utils.fusion_data(imgs_hallucinated, imgs_ir_three_channel, fuse_data=args.fuse_data)
 
         imgs_rgb = imgs_rgb.float() # To handle problems with double to float conversion
 

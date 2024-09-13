@@ -4,7 +4,6 @@ from functools import partial
 import sys
 import math
 # Implementation of forward pass for the detectors to calculate loss and use then in the training of our model
-from src.utils.eval_forward_ssd import eval_forward_ssd
 from src.utils.eval_forward_fasterrcnn import eval_forward_fasterrcnn
 from src.utils.eval_forward_retinanet import eval_forward_retinanet
 from src.utils.eval_forward_fcos import eval_forward_fcos
@@ -21,11 +20,11 @@ def _xavier_init(conv: torch.nn.Module):
                 torch.nn.init.constant_(layer.bias, 0.0)
 
 
-# Detector model from torchsivion, ssd300_vgg16 was tested. 
+# Detector model from torchsivion
 class Detector():
     def __init__(
         self,
-        name='ssd300_vgg16', 
+        name='fasterrcnn_resnet50_fpn', 
         pretrained=True,
         n_classes=2, 
         size=300,
@@ -48,24 +47,8 @@ class Detector():
                                                                         size_divisible=1,
                                                                         fixed_size=(size, size)) 
 
-            if('ssd' in name):
-                in_channels, num_anchors, norm_layer = self.calculate_parameters_for_head(size=size, 
-                                                                            batch_norm_eps=batch_norm_eps, 
-                                                                            batch_norm_momentum=batch_norm_momentum)
 
-                # Change the classification head of the ssd detector (we tested only ssd300_vgg16)
-                self.detector.head = self.change_head_ssd(in_channels,
-                                                        num_anchors, 
-                                                        n_classes, 
-                                                        norm_layer,
-                                                        detector_name=name,
-                                                        )
-
-                # Initialize the weights of the new heads (this work for new heads)
-                _xavier_init(self.detector.head.classification_head)
-                _xavier_init(self.detector.head.regression_head)
-
-            elif('fasterrcnn' in name):
+            if('fasterrcnn' in name):
 
                 in_features = self.detector.roi_heads.box_predictor.cls_score.in_features
                 self.detector.roi_heads.box_predictor = torchvision.models.detection.faster_rcnn.FastRCNNPredictor(in_features, n_classes)
@@ -82,9 +65,6 @@ class Detector():
                 torch.nn.init.constant_(cls_logits.bias, -math.log((1 - 0.01) / 0.01))
                 self.detector.head.classification_head.cls_logits = cls_logits
 
-
-            if(modality == 'concat'):
-                self.detector.backbone.features[0] = torch.nn.Conv2d(4, 64, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
 
             if eval_path is not None and '.bin' in eval_path:
                 self.detector.load_state_dict(torch.load(eval_path))
@@ -108,24 +88,9 @@ class Detector():
 
         return in_channels, num_anchors, norm_layer
 
-    # Change the classification head of the ssd detector (we tested only ssd300_vgg16)
-    def change_head_ssd(self, in_channels, num_anchors, n_classes, norm_layer, detector_name):
-        
-        if(detector_name == 'ssd' or detector_name == 'ssd300_vgg16'):
-            return torchvision.models.detection.ssd.SSDHead(in_channels, 
-                                                            num_anchors, 
-                                                            n_classes)
-        
-        elif(detector_name == 'ssdlite' or detector_name == 'ssdlite320_mobilenetv3'):
-            return torchvision.models.detection.ssdlite.SSDLiteHead(in_channels, 
-                                                                num_anchors, 
-                                                                n_classes, 
-                                                                norm_layer)
-        
 
 
-
-    ## The default parameters are for ssd300 vgg16 but the mean and std is defined for mean 0 and std 1
+    ## The default parameters are for fasterrcnn_resnet50_fpn vgg16 but the mean and std is defined for mean 0 and std 1
     def change_generalized_transform(self, min_size=300, max_size=300, image_mean=[0.0], image_std=[1.0], size_divisible=1, fixed_size=(300, 300)):
         return CustomGeneralizedRCNNTransform(min_size=min_size, 
                                             max_size=max_size, 
@@ -137,12 +102,9 @@ class Detector():
 
 
     @staticmethod
-    def calculate_loss(detector, outs, targets, train_det=False, model_name='ssd', debug=None):
+    def calculate_loss(detector, outs, targets, train_det=False, model_name='fasterrcnn', debug=None):
 
-        if('ssd' in model_name):
-            losses_det, detections = eval_forward_ssd(detector, list(outs), targets, train_det=train_det, model_name=model_name)
-
-        elif('fasterrcnn' in model_name):
+        if('fasterrcnn' in model_name):
             losses_det, detections = eval_forward_fasterrcnn(detector, outs, targets, train_det=train_det, model_name=model_name)
 
         elif('retinanet' in model_name):
@@ -156,22 +118,15 @@ class Detector():
         return losses_det, detections
 
 
-    # Select the detector (We just tested with ssd300 detector with vgg16 backbone)
+    # Select the detector model
     @staticmethod
-    def select_detector(detector_name='ssd300_vgg16', pretrained=True):
+    def select_detector(detector_name='fasterrcnn_resnet50_fpn', pretrained=True):
         
-        ## ssd300 vgg16 trained 
-        ## ssdlite320 mobilenet v3
         ## fasterrcnn_resnet50_fpn
         ## retinanet_resnet50_fpn
-
-        if(detector_name == 'ssd' or detector_name == 'ssd300_vgg16'):
-            return torchvision.models.detection.ssd300_vgg16(pretrained=pretrained)
-
-        elif(detector_name == 'ssdlite' or detector_name == 'ssdlite320_mobilenetv3'):
-            return torchvision.models.detection.ssdlite320_mobilenet_v3_large(pretrained=pretrained)
-
-        elif(detector_name == 'fasterrcnn' or detector_name == 'fasterrcnn_resnet50_fpn'):
+        ## fcos_resnet50_fpn
+        
+        if(detector_name == 'fasterrcnn' or detector_name == 'fasterrcnn_resnet50_fpn'):
             return torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained)
 
         elif(detector_name == 'retinanet' or detector_name == 'retinanet_resnet50_fpn'):
@@ -181,6 +136,6 @@ class Detector():
             return torchvision.models.detection.fcos_resnet50_fpn(pretrained=pretrained)
         
         else:
-            print("Model Name not found (Using ssd300 vgg16")
+            print("Model Name not found (Using fasterrcnn_resnet50_fpn")
 
-        return torchvision.models.detection.ssd300_vgg16(pretrained=pretrained)
+        return torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained)

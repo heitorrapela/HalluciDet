@@ -5,10 +5,7 @@ import torch
 import xml.etree.ElementTree as ET
 import torchvision
 import matplotlib.pyplot as plt
-import seaborn as sns
-from src.utils.fusion_strategy import addition_fusion, attention_fusion_weight
-plt.style.use('ggplot')
-sns.set_style("darkgrid")
+
 
 class Utils():
 
@@ -25,7 +22,7 @@ class Utils():
 
 
     @staticmethod
-    def list_targets(targets, device='cpu', detach=False, detector_name='ssd'):
+    def list_targets(targets, device='cpu', detach=False, detector_name='fasterrcnn'):
         
         if 'fcos' in detector_name: # ps: tested on gpu.
 
@@ -46,7 +43,7 @@ class Utils():
 
 
     @staticmethod
-    def batch_targets_for_detector(targets, device='cpu', detach=False, detector_name='ssd'):
+    def batch_targets_for_detector(targets, device='cpu', detach=False, detector_name='fasterrcnn'):
         return Utils.list_targets(targets=targets, device=device, detach=detach, detector_name=detector_name)
 
 
@@ -112,43 +109,6 @@ class Utils():
         for x in input_tensor:
             sum_batch += x
         return sum_batch/len(input_tensor)
-
-
-    @staticmethod
-    def plot_histogram(hist, color='forestgreen', cont=0, clear=False):
-
-        # hist = torch.histc(hist, bins=256, min=0.0, max=1.0, out=None).detach().cpu().numpy()
-        # plt.bar(range(256), hist, align='center', color=[color])
-        # plt.xlabel('Bins')
-        # plt.ylabel('Frequency')
-        # plt.show()
-
-        p = sns.distplot(hist*256, hist = False, kde = True,
-                        kde_kws = {'shade': True, 'linewidth': 3},
-                        color=[color] 
-                        )
-
-        p.set(title='Density Estimation on Kaist Validation Dataset')
-        p.set_xlabel("Pixel Intensity", fontsize=10)
-        p.set_ylabel("Density", fontsize=10)
-
-        legend_params_labels = ['Red Channel (RGB)', 
-                        'Green Channel (RGB)', 
-                        'Blue Channel (RGB)', 
-                        'Infrared (IR)',]
-        
-        p.legend(loc='center left', labels=legend_params_labels, bbox_to_anchor=(1.01, 1),
-                 borderaxespad=0)
-
-        
-        # cont > 1, skip first validation of pytorch lightning
-        if(clear == True):
-            if(cont > 1):
-                plt.savefig('distplot_' + str(cont) + '_' + str(color) , dpi=300, bbox_inches='tight')
-                plt.savefig('distplot_' + str(cont) + '_' + str(color) + '.pdf', dpi=300, bbox_inches='tight')
-            plt.clf()
-            plt.cla()
-            plt.close()
 
 
     @staticmethod
@@ -521,21 +481,3 @@ class Utils():
                     labels.append([1])
 
         return {"bboxes" : np.array(bboxes).astype("float"), "labels" : np.array(labels).astype("int")}
-
-    @staticmethod
-    def fusion_data(imgs_hallucinated, img_ir, fuse_data="none"):
-
-        if(fuse_data == "cross"):
-            imgs_hallucinated = torch.clip(img_ir * imgs_hallucinated, min=0.0, max=1.0)
-        elif(fuse_data == "addition"):
-            imgs_hallucinated = addition_fusion(img_ir, imgs_hallucinated)
-        elif(fuse_data == "attention"):
-            imgs_hallucinated = attention_fusion_weight(img_ir, imgs_hallucinated)
-
-        return imgs_hallucinated
-
-
-
-if __name__ == "__main__":
-
-    print("debug")

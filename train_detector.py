@@ -81,7 +81,7 @@ wandb_logger = wandb.init(project=args.wandb_project, name=args.wandb_name, conf
 
 class DetectorLit(pl.LightningModule):
     def __init__(self, batch_size=4, wandb_logger=None,
-                lr=0.0001, detector_name='ssd', pretrained=True, optimizer_name='adam', modality=None, directly_coco=False):
+                lr=0.0001, detector_name='fasterrcnn', pretrained=True, optimizer_name='adam', modality=None, directly_coco=False):
         super().__init__()
 
 
@@ -163,9 +163,6 @@ class DetectorLit(pl.LightningModule):
 
         losses_det['bbox_regression'] = losses_det['bbox_regression'] * Config.Losses.hparams_losses_weights['det_regression']
         losses_det['classification'] = losses_det['classification'] * Config.Losses.hparams_losses_weights['det_classification']
-        
-        losses_det['masked'] = (losses_det['masked'] * Config.Losses.hparams_losses_weights['det_masked'] 
-                                if 'ssd' in self.detector_name else 0.0) # implemented just for test inside ssd
 
         losses_det['loss_objectness'] = (losses_det['loss_objectness'] *  Config.Losses.hparams_losses_weights['det_objectness']
                                             if 'fasterrcnn' in self.detector_name else 0.0)
@@ -175,7 +172,7 @@ class DetectorLit(pl.LightningModule):
                                             if 'fcos' in self.detector_name else 0.0)
         
         total_loss = losses_det['bbox_regression'] + losses_det['classification'] + \
-                        losses_det['masked'] + losses_det['loss_objectness'] + \
+                        losses_det['loss_objectness'] + \
                         losses_det['loss_rpn_box_reg'] + losses_det['bbox_ctrness']                               
 
 
@@ -383,7 +380,7 @@ if __name__ == "__main__":
                                 pl.callbacks.TQDMProgressBar(),
                                 checkpoint_best_callback,
                         ],
-                        num_sanity_val_steps=0, # debug
+                        num_sanity_val_steps=0,
                         precision=args.precision, # 32 default
                         enable_model_summary=False,
                         limit_train_batches=args.limit_train_batches,

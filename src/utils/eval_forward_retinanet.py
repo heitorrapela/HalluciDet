@@ -80,7 +80,7 @@ def box_loss(
         return torchvision.ops.generalized_box_iou_loss(bbox_per_image, matched_gt_boxes_per_image, reduction="sum", eps=eps)
 
 
-def eval_forward_retinanet(model, images, targets, train_det=False, model_name='ssd', debug=False):
+def eval_forward_retinanet(model, images, targets, train_det=False, model_name='retinanet', debug=False):
 
     if not train_det:
         model.eval()

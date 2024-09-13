@@ -13,7 +13,7 @@ class CnnBasedThermalInfraredDA(pl.LightningModule):
     def __init__(
         self,
         num_classes=2, 
-        model_name='ssd300_vgg16', 
+        model_name='fasterrcnn_resnet50_fpn', 
         pretrained=False,
         lr=1e-5,
 
@@ -22,16 +22,8 @@ class CnnBasedThermalInfraredDA(pl.LightningModule):
 
         self.model = None
 
-        ## ssd300 vgg16 trained -> pretrained on coco
-        if(model_name == 'ssd300_vgg16'):
-            self.model = torchvision.models.detection.ssd300_vgg16(pretrained=pretrained)
-
-        ## ssdlite320 mobilenet v3 -> pretrained on coco
-        elif(model_name == 'ssdlite320_mobilenetv3'):
-            self.model = torchvision.models.detection.ssdlite320_mobilenet_v3_large(pretrained=pretrained)
-
         ## fasterrcnn_resnet50_fpn
-        elif(model_name == 'fasterrcnn_resnet50_fpn'):
+        if(model_name == 'fasterrcnn_resnet50_fpn'):
             self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained)
 
         ## retinanet_resnet50_fpn
@@ -39,8 +31,8 @@ class CnnBasedThermalInfraredDA(pl.LightningModule):
             self.model = torchvision.models.detection.retinanet_resnet50_fpn(pretrained=pretrained)
 
         else:
-            print("Model Name not found (Using ssd300 vgg16 pretrained on coco dataset)")
-            self.model = torchvision.models.detection.ssd300_vgg16(pretrained=pretrained)
+            print("Model Name not found (Using fasterrcnn pretrained on coco dataset)")
+            self.model = torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained)
 
         self.lr = lr
 
