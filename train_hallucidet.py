@@ -486,13 +486,6 @@ checkpoint_best_callback = pl.callbacks.ModelCheckpoint(
     filename="best",
 )
 
-# Save last model
-checkpoint_last_callback = pl.callbacks.ModelCheckpoint(
-    save_last=True,
-    dirpath=os.path.join('lightning_logs', args.wandb_project, args.wandb_name, "_".join([args.dataset, args.modality, Config.Detector.name])),
-    filename="last"
-)
-
 
 # Training
 trainer = pl.Trainer(
@@ -504,7 +497,6 @@ trainer = pl.Trainer(
                     callbacks=[
                             pl.callbacks.RichProgressBar(),
                             checkpoint_best_callback,
-                            checkpoint_last_callback
                     ],
                     deterministic=False,
                     limit_train_batches=args.limit_train_batches,
@@ -548,14 +540,6 @@ trainer.fit(model, dm)
 
 trainer.save_checkpoint(os.path.join(trainer.checkpoint_callback.dirpath,
                                     'encoder_decoder_pl.ckpt'))
-
-torch.save(model.detector.state_dict(),  
-            os.path.join(trainer.checkpoint_callback.dirpath, 'detector.bin')
-)
-
-torch.save(model.encoder_decoder.state_dict(),  
-            os.path.join(trainer.checkpoint_callback.dirpath, 'encoder_decoder.bin')
-)
 
 trainer.test(model, dm, ckpt_path="best")
 

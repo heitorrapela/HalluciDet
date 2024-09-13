@@ -12,19 +12,19 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 
 # Dependencies
 
-	conda create -n hallucidet python=3.6
+	conda create -n hallucidet python=3.8.10
 	conda activate hallucidet
 	conda install pytorch torchvision torchaudio cpuonly -c pytorch
-	pip install matplotlib
-	pip install pytorch_lightning
-	pip install opencv-python
-	pip install imageio
-	pip install scikit-image
-	pip install scikit-learn
-	pip install pandas
-	pip install pycocotools
-	pip install torchmetrics
-	pip install wandb
+	pip install matplotlib==3.7.0
+	pip install pytorch_lightning==1.5.10
+	pip install opencv-python==4.6.0.66
+	pip install imageio==2.22.4
+	pip install scikit-image==0.19.3
+	pip install scikit-learn=1.1.3
+	pip install pandas=1.5.3
+	pip install pycocotools==
+	pip install torchmetrics==1.5.3
+	pip install wandb==1.5.3
 
 
 # How to run
