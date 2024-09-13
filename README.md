@@ -25,7 +25,6 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install pycocotools
 	pip install torchmetrics
 	pip install wandb
-	pip install segmentation-models-pytorch
 
 
 # How to run
@@ -33,10 +32,10 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 
 	## For training the initial rgb model that is the baseline
 	## This is the seed123 result for the fasterrcnn on llvip dataset
-	CUDA_VISIBLE_DEVICES=0 python train_detector.py --eval --pretrained --wandb-project wacv2024 --wandb-name detector_fasterrcnn_rgb_llvip_200ep_seed123 --detector fasterrcnn --modality rgb --dataset llvip --epochs 200 --batch 16 --seed 123
+	CUDA_VISIBLE_DEVICES=0 python train_detector.py --pretrained --wandb-project wacv2024 --wandb-name detector_fasterrcnn_rgb_llvip_200ep_seed123 --detector fasterrcnn --modality rgb --dataset llvip --epochs 200 --batch 16 --seed 123
 
 	## Train HalluciDet
-	CUDA_VISIBLE_DEVICES=0 python train_hallucidet.py --eval --pretrained --modality ir --detector-path ./lightning_logs/wacv2024/detector_fasterrcnn_rgb_llvip_200ep_seed123/llvip_rgb_fasterrcnn/best.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 200 --batch 8 --seed 123
+	CUDA_VISIBLE_DEVICES=0 python train_hallucidet.py --pretrained --modality ir --detector-path ./lightning_logs/wacv2024/detector_fasterrcnn_rgb_llvip_200ep_seed123/llvip_rgb_fasterrcnn/best.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 200 --batch 8 --seed 123
 
   
 

@@ -47,51 +47,6 @@ class Utils():
         return Utils.list_targets(targets=targets, device=device, detach=detach, detector_name=detector_name)
 
 
-    @staticmethod
-    def remove_small_boxes(boxes, min_size):
-        ws, hs = boxes[:, 2] - boxes[:, 0], boxes[:, 3] - boxes[:, 1]
-        keep = (ws >= min_size) & (hs >= min_size)
-        keep = torch.where(keep)[0]
-        return boxes[keep]
-
-
-    @staticmethod
-    def filter_pseudo_label(targets, images, device):
-        _, _, height, width = images.shape
-        
-        return [{k: (v.detach().to(device) if k != 'boxes' else 
-                            Utils.remove_small_boxes(
-                                torchvision.ops.clip_boxes_to_image(v.detach().to(device), size=(height, width)),
-                                min_size=10.0
-                                )
-                            )
-                            for k, v in t.items()} for t in targets]
-
-
-    @staticmethod
-    def create_pseudo_labels(detector, imgs, device, threshold=0.5):
-
-        detector.eval()
-        output_pseudo_label = detector(imgs)
-
-        final_result = []
-        for idx, img in enumerate(imgs):
-
-            output_pseudo_label_th = {}
-            output_pseudo_label_th['boxes'] = output_pseudo_label[idx]['boxes'][output_pseudo_label[idx]['scores'] > threshold].to(device)
-            output_pseudo_label_th['scores'] = output_pseudo_label[idx]['scores'][output_pseudo_label[idx]['scores'] > threshold].to(device)
-            output_pseudo_label_th['labels'] = output_pseudo_label[idx]['labels'][output_pseudo_label[idx]['scores'] > threshold].to(device)
-        
-            if output_pseudo_label_th is None or output_pseudo_label_th['boxes'].numel() == 0:
-                output_pseudo_label_th['boxes'] = torch.zeros((1,4)).to(device)
-                output_pseudo_label_th['scores'] = torch.zeros((1)).to(device)
-                output_pseudo_label_th['labels'] = torch.zeros((1), dtype=torch.int64).to(device)
-
-            final_result.append(output_pseudo_label_th)
-        
-        detector.train()
-        return final_result
-
 
     @staticmethod
     def expand_one_channel_to_output_channels(imgs, output_channels=3):

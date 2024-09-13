@@ -129,8 +129,6 @@ class Config:
 
         parser.add_argument('--wandb-name', type=str, default="detector", help='Wandb Run Name')
 
-        parser.add_argument('--eval', action='store_true', help='Flag to load pretrained model (default: False)')
-
         parser.add_argument("--batch", type=int, default=16, help="Batch size (default: 16)")
 
         parser.add_argument("--num-workers", type=int, default=4, help="Number of workers. (default: 4)")
