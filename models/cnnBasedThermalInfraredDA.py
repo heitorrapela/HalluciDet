@@ -9,7 +9,6 @@ import numpy as np
 
 # Implementation of CNN-based thermal infrared person detection by domain adaptation
 # https://www.spiedigitallibrary.org/conference-proceedings-of-spie/10643/1064308/CNN-based-thermal-infrared-person-detection-by-domain-adaptation/10.1117/12.2304400.full?SSO=1
-
 class CnnBasedThermalInfraredDA(pl.LightningModule):
     def __init__(
         self,

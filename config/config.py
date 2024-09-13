@@ -25,7 +25,7 @@ class Config:
     class Dataset:
         
         train_valid_split = 0.8
-        dataset = 'kaist'
+        dataset = 'llvip'
 
         if dataset == 'kaist': 
             train_path = '../datasets/kaist/train'
@@ -56,29 +56,28 @@ class Config:
     class Losses:
 
         hparams_losses_weights = {
-            'pixel_rgb': 0.0, #0.1,
-            'pixel_ir': 0.0, #0.1,
-            'perceptual_rgb': 0.0, #0.1,
-            'perceptual_ir': 0.0, #1.0, #1.0, #0.0, #0.1,
-            'det_regression': 0.1, #0.1,
-            'det_classification': 0.1, #0.1,
-            'det_objectness' : 0.1, #0.1,
-            'det_rpn_box_reg' : 0.1, #0.1,
-            'det_bbox_ctrness' : 0.1, #0.1,
-            'det_masked': 0.0, #1.0, #0.1,
+            'pixel_rgb': 0.0,
+            'pixel_ir': 0.0,
+            'perceptual_rgb': 0.0,
+            'perceptual_ir': 0.0,
+            'det_regression': 0.1,
+            'det_classification': 0.1,
+            'det_objectness' : 0.1,
+            'det_rpn_box_reg' : 0.1,
+            'det_bbox_ctrness' : 0.1,
+            'det_masked': 0.0,
         }
 
-        pixel = None # 'mse'
-        perceptual = None # 'lpips_alexnet'
+        pixel = None
+        perceptual = None
 
     class EncoderDecoder:
 
         in_channels_encoder = 3
         out_channels_decoder = 3
         decoder_head = 'sigmoid'
-
-        load_encoder_decoder = False #load_encoder_decoder = True
-        encoder_decoder_load_path = 'lightning_logs/bmvc/detector_ssd_hallucidet_det01reg01_seed123/llvip_ir_ssd/best.ckpt'
+        load_encoder_decoder = False # load_encoder_decoder = True
+        encoder_decoder_load_path = 'lightning_logs/hallucidet/detector_fasterrcnn_hallucidet_det01reg01_seed123/llvip_ir_fasterrcnn/best.ckpt'
 
 
     class Detector:
@@ -86,21 +85,19 @@ class Config:
         train_det = False
         name = 'fasterrcnn'
         pretrained = True
-        input_size = 300 # 640 for flir
+        input_size = 300 # 640 for flir 
         batch_norm_eps = 0.001
         batch_norm_momentum = 0.03
         eval_path = None
         modality = None
         score_threshold = 0.5
-        
-
-
+    
 
     @staticmethod
     def argument_parser():
-        parser = argparse.ArgumentParser(description='CnnBasedThermalInfrared')
+        parser = argparse.ArgumentParser(description='HalluciDet')
 
-        parser.add_argument('--dataset', type=str, default=None, help='kaist/llvip/flir')
+        parser.add_argument('--dataset', type=str, default=None, help='llvip/flir')
 
         parser.add_argument('--train', type=str, default=None, help='Train Dataset Path')
 
@@ -110,7 +107,7 @@ class Config:
 
         parser.add_argument('--n-classes', '--n_classes', '--num-classes', '--nclasses', type=int, default=2, help='Number of classes (default: 2)')
 
-        parser.add_argument('--detector', type=str, default='ssd', help="Model Path (default: ssd), choices=['ssd', 'ssdlite']")
+        parser.add_argument('--detector', type=str, default='fasterrcnn', help="Model Path (default: fasterrcnn), choices=['fasterrcnn', 'fcos', 'retinanet']")
 
         parser.add_argument('--pretrained', action='store_true', help='Flag to load pretrained model (default: False)')
 
@@ -215,22 +212,19 @@ class Config:
                 dict(params=list(params),
                     lr=lr,
                     momentum=momentum,
-                    weight_decay=weight_decay
-                    ),
+                    weight_decay=weight_decay),
             ])
             
         elif(optimizer == 'adam'):
             return torch.optim.Adam([ 
                 dict(params=list(params), 
-                    lr=lr, ),
+                    lr=lr),
             ])
 
         elif(optimizer == 'adamw'):
             return torch.optim.AdamW([ 
                 dict(params=list(params), 
-                    lr=lr,
-                    #amsgrad=True,
-                    ),
+                    lr=lr),
             ])
 
         elif(optimizer == 'lion'):
@@ -248,11 +242,9 @@ class Config:
             return torch.optim.Adadelta([ 
                 dict(params=list(params), 
                     lr=lr,
-                    #amsgrad=True,
                     ),
             ])
             
-
         return None
 
 
@@ -279,11 +271,9 @@ class Config:
         os.environ["VECLIB_MAXIMUM_THREADS"] = Config.Environment.N_CORE
         os.environ["NUMEXPR_NUM_THREADS"] = Config.Environment.N_CORE
         torch.set_num_threads(Config.Environment.N_THREADS_TORCH)
-
-        # torch.use_deterministic_algorithms(True)
         torch.backends.cudnn.benchmark = Config.Environment.CUDNN_BENCHMARK
+        
 
-    ## Function to update the paths, I used this to give priority to command line then config
     @staticmethod 
     def set_dataset_path(dataset):
 
@@ -368,11 +358,3 @@ class Config:
 
         if args.weight_det_bbox_ctrness != 0.1:
             Config.Losses.hparams_losses_weights['det_bbox_ctrness'] = args.weight_det_bbox_ctrness
-
-
-if __name__ == "__main__":
-    
-    args = Config().argument_parser()
-    print(args)
-
-    print(args.epochs)

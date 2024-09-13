@@ -26,45 +26,6 @@ class DatasetTransform(torch.utils.data.Dataset):
             if self.transform:
 
                 imgs = self.transform(imgs)
-                
-                # before_targets = targets.copy()
-
-                # transformed_data = self.transform(image=np.array(imgs, copy=True), bboxes=targets['boxes'], labels=targets['labels'])
-
-                # transformed_imgs = transformed_data['image']
-                # transformed_bboxes = transformed_data['bboxes']
-                # transformed_labels = transformed_data['labels']
-
-                # imgs = transformed_imgs.float() / 255.0
-
-                # if isinstance(imgs, np.ndarray):
-                #     imgs = torch.from_numpy(imgs).float().unsqueeze(0)
-                
-                # if isinstance(transformed_bboxes, list):
-                #     targets['boxes'] = torch.tensor(transformed_bboxes)
-                # else:
-                #     targets['boxes'] = transformed_bboxes.detach()
-
-                # if isinstance(transformed_labels, list):
-                #     targets['labels'] = torch.tensor(transformed_labels)
-                # else:
-                #     targets['labels'] = transformed_labels.detach()
-
-                # if(len(targets['boxes']) == 0):
-                #     targets = before_targets.copy()
-
-                # for idx, bbox in enumerate(targets['boxes']):
-                #     _, cols, rows = imgs.shape
-                #     x_min, y_min, x_max, y_max = bbox
-                #     rows = rows - 1
-                #     cols = cols - 1
-                    
-                #     x_min = min(max(0, x_min), rows)
-                #     y_min = min(max(0, y_min), cols)
-                #     x_max = max(min(rows, x_max), 0)
-                #     y_max = max(min(cols, y_max), 0)
-
-                #     targets['boxes'][idx] = torch.Tensor([x_min, y_min, x_max, y_max]).to(torch.float64)
 
             return imgs, targets
 
@@ -292,7 +253,6 @@ class MultiModalDataModule(pl.LightningDataModule):
         return self.train_dataloader_multimodality
 
     def val_dataloader(self):
-        ## This is just to eval model every epoch for ablation curves
         return self.valid_dataloader_multimodality
 
     def test_dataloader(self):

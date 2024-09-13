@@ -1,5 +1,5 @@
-# https://raw.githubusercontent.com/hli1221/densefuse-pytorch/master/fusion_strategy.py
 # code from densefuse
+# https://raw.githubusercontent.com/hli1221/densefuse-pytorch/master/fusion_strategy.py
 import torch
 
 EPSILON = 1e-10
