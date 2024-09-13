@@ -1,10 +1,12 @@
 
-# HalluciDet [WACV2024 and @LatinX/CVPR2024]
+# [WACV2024] HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information
+
+This repository contains the code used for [HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information 🔗](https://arxiv.org/abs/2310.04662) by Heitor Rapela Medeiros, Fidel A. Guerrero Pena, Masih Aminbeidokhti, Thomas Dubail, Eric Granger, Marco Pedersoli **(WACV 2024)**. 
+
+Recently, this work was also accepted as an extended abstract in the [LatinX in CV (LXCV) @CVPR2024 🔗](https://www.latinxinai.org/cvpr-2024)
 
 
 ![HalluciDet Model](./resources/hallucidet.png)
-
-This repository contains the code used for [HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information 🔗](https://arxiv.org/abs/2310.04662) by Heitor Rapela Medeiros, Fidel A. Guerrero Pena, Masih Aminbeidokhti, Thomas Dubail, Eric Granger, Marco Pedersoli **(WACV 2024)**. Recently, this work was also accepted as an extended abstract in the [LatinX in CV (LXCV) @CVPR2024 🔗](https://www.latinxinai.org/cvpr-2024)
 
 
 
@@ -30,7 +32,7 @@ This repository contains the code used for [HalluciDet: Hallucinating RGB Modali
 # How to run
 
 
-	## For training the initial rgb model that is the baseline (Also you can use our checkpoint, that I am going to update soon)
+	## For training the initial rgb model that is the baseline
 	## This is the seed123 result for the fasterrcnn on llvip dataset
 	CUDA_VISIBLE_DEVICES=0 python train_detector.py --eval --pretrained --wandb-project wacv2024 --wandb-name detector_fasterrcnn_rgb_llvip_200ep_seed123 --detector fasterrcnn --modality rgb --dataset llvip --epochs 200 --batch 16 --seed 123
 
