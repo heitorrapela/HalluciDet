@@ -76,7 +76,7 @@ class EncoderDecoderLit(pl.LightningModule):
         ## EncoderDecoder
         self.encoder_decoder = EncoderDecoder(name=self.model_name, 
                                             encoder_depth=args.encoder_depth,
-                                            encoder_weights='imagenet', # imagenet
+                                            encoder_weights='imagenet',
                                             decoder_attention_type=None,
                                             in_channels=self.in_channels,
                                             output_channels=self.output_channels,
@@ -176,18 +176,13 @@ class EncoderDecoderLit(pl.LightningModule):
         ## Detector Hallucinated
         train_det = True if (self.train_det == True and step == 'train') else False
         losses_det, detections_hall = Detector.calculate_loss(self.detector, imgs_hallucinated, targets_ir, train_det=train_det, model_name=self.detector_name, debug=False)
-        # output_hal_det = torch.Tensor(np.asarray([Utils().plot_each_image(imgs_hallucinated[idx], det, targets_ir[idx], threshold=args.threshold) 
-        #                             for idx, det in enumerate(detections_hall)]))
 
         ## Detector RGB
         _, detections_rgb  = Detector.calculate_loss(self.detector, imgs_rgb, targets_rgb, train_det=False, model_name=self.detector_name, debug=True)
-        # output_rgb_det = torch.Tensor(np.asarray([Utils().plot_each_image(imgs_rgb[idx], det, targets_rgb[idx], threshold=args.threshold) 
-        #                             for idx, det in enumerate(detections_rgb)]))
 
         ## Detector IR
         _, detections_ir = Detector.calculate_loss(self.detector, imgs_ir_three_channel, targets_ir, train_det=False, model_name=self.detector_name, debug=False)
-        # output_ir_det = torch.Tensor(np.asarray([Utils().plot_each_image(imgs_ir_three_channel[idx], det, targets_ir[idx], threshold=args.threshold) 
-        #                             for idx, det in enumerate(detections_ir)]))
+
 
         if 'fasterrcnn' in self.detector_name:
             losses_det['classification'] = losses_det['loss_classifier']
@@ -196,9 +191,6 @@ class EncoderDecoderLit(pl.LightningModule):
         losses_det['bbox_regression'] = losses_det['bbox_regression'] * Config.Losses.hparams_losses_weights['det_regression']
         losses_det['classification'] = losses_det['classification'] * Config.Losses.hparams_losses_weights['det_classification']
         
-        losses_det['masked'] = (losses_det['masked'] * Config.Losses.hparams_losses_weights['det_masked'] 
-                                if 'ssd' in self.detector_name else 0.0) # implemented just for test inside ssd
-
         losses_det['loss_objectness'] = (losses_det['loss_objectness'] *  Config.Losses.hparams_losses_weights['det_objectness']
                                             if 'fasterrcnn' in self.detector_name else 0.0)
         losses_det['loss_rpn_box_reg'] = (losses_det['loss_rpn_box_reg'] * Config.Losses.hparams_losses_weights['det_rpn_box_reg']
@@ -207,7 +199,7 @@ class EncoderDecoderLit(pl.LightningModule):
                                             if 'fcos' in self.detector_name else 0.0)
         
         loss_det_total = losses_det['bbox_regression'] + losses_det['classification'] + \
-                        losses_det['masked'] + losses_det['loss_objectness'] + \
+                        losses_det['loss_objectness'] + \
                         losses_det['loss_rpn_box_reg'] + losses_det['bbox_ctrness']                               
 
 
@@ -224,14 +216,12 @@ class EncoderDecoderLit(pl.LightningModule):
         imgs_hallucinated = Utils.normalize_batch_images(imgs_hallucinated.detach().clone())
 
         return {
-            'loss' : {'total': total_loss, 
                 'pixel_rgb': loss_pixel_rgb, 
                 'perceptual_rgb': loss_perceptual_rgb, 
                 'pixel_ir': loss_pixel_ir,
                 'perceptual_ir': loss_perceptual_ir, 
                 'det_regression': losses_det['bbox_regression'],
                 'det_classification': losses_det['classification'],
-                'det_masked': losses_det['masked'],
                 'det_objectness': losses_det['loss_objectness'],
                 'det_rpn_box_reg': losses_det['loss_rpn_box_reg'],
                 'det_bbox_ctrness': losses_det['bbox_ctrness'],
@@ -259,7 +249,6 @@ class EncoderDecoderLit(pl.LightningModule):
                                 'train/loss/perceptual_ir': forward_return['loss']['perceptual_ir'],
                                 'train/loss/det_reg': forward_return['loss']['det_regression'],
                                 'train/loss/det_class': forward_return['loss']['det_classification'],
-                                'train/loss/det_masked': forward_return['loss']['det_masked'],
                                 'train/loss/det_objectness': forward_return['loss']['det_objectness'],
                                 'train/loss/det_rpn_box_reg': forward_return['loss']['det_rpn_box_reg'],
                                 'train/loss/det_bbox_ctrness': forward_return['loss']['det_bbox_ctrness'],
@@ -303,7 +292,6 @@ class EncoderDecoderLit(pl.LightningModule):
                         'valid/loss/perceptual_ir': forward_return['loss']['perceptual_ir'],
                         'valid/loss/det_reg': forward_return['loss']['det_regression'],
                         'valid/loss/det_class': forward_return['loss']['det_classification'],
-                        'valid/loss/det_masked': forward_return['loss']['det_masked'],
                         'valid/loss/det_objectness': forward_return['loss']['det_objectness'],
                         'valid/loss/det_rpn_box_reg': forward_return['loss']['det_rpn_box_reg'],
                         'valid/loss/det_bbox_ctrness': forward_return['loss']['det_bbox_ctrness'],

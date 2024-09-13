@@ -1,8 +1,8 @@
 import torchvision
 import torch
 import sys 
-sys.path.append("./src/custom_segmentation_models/")
-import src.custom_segmentation_models.segmentation_models_pytorch as smp
+sys.path.append("./segmentation_models/")
+import src.segmentation_models.segmentation_models_pytorch as smp
 
 # EncoderDecoder model that wraps segmentation models
 class EncoderDecoder():

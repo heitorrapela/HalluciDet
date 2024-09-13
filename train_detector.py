@@ -97,7 +97,7 @@ class DetectorLit(pl.LightningModule):
                     size=Config.Detector.input_size,
                     batch_norm_eps=Config.Detector.batch_norm_eps,
                     batch_norm_momentum=Config.Detector.batch_norm_momentum,
-                    eval_path=pre_train_path, # fine-tune
+                    eval_path=pre_train_path,
                     modality=modality,
                     directly_coco=directly_coco,
                     ).detector
@@ -383,14 +383,6 @@ if __name__ == "__main__":
         filename="best",
     )
 
-    # Save last model
-    checkpoint_last_callback = pl.callbacks.ModelCheckpoint(
-        save_last=True,
-        dirpath=os.path.join('lightning_logs', args.wandb_project, args.wandb_name, "_".join([args.dataset, args.modality, Config.Detector.name])),
-        filename="last"
-    )
-
-
     # Training
     trainer = pl.Trainer(gpus=1,
                         accelerator="gpu",
@@ -400,8 +392,6 @@ if __name__ == "__main__":
                                 pl.callbacks.EarlyStopping(monitor="val_map", mode="max", patience=5),
                                 pl.callbacks.TQDMProgressBar(),
                                 checkpoint_best_callback,
-                                checkpoint_last_callback
-
                         ],
                         num_sanity_val_steps=0, # debug
                         precision=args.precision, # 32 default
