@@ -37,7 +37,6 @@ jsonpointer==2.3
 kiwisolver==1.4.4
 kornia==0.6.8
 lion-pytorch==0.0.7
-lpips==0.1.4
 Markdown==3.4.1
 MarkupSafe==2.1.1
 matplotlib==3.7.0

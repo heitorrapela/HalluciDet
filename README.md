@@ -25,7 +25,6 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install pycocotools
 	pip install torchmetrics
 	pip install wandb
-	pip install lpips
 	pip install segmentation-models-pytorch
 
 
