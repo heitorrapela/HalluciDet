@@ -1,11 +1,11 @@
 import os
-from config.config import Config
+from src.config.config import Config
 import torch
 Config.set_environment()
 import numpy as np
-from metrics import metrics
-from dataloader.dataloaderPL import SingleModalDataModule
-from dataloader.dataloaderPL import MultiModalDataModule
+from src.metrics import metrics
+from src.dataloader.dataloaderPL import SingleModalDataModule
+from src.dataloader.dataloaderPL import MultiModalDataModule
 import pytorch_lightning as pl
 from pytorch_lightning import seed_everything
 import imageio
@@ -13,8 +13,8 @@ import skimage
 import skimage.transform # lazy import
 import torchvision
 import wandb
-from utils.utils import Utils
-from models.detector import Detector
+from src.utils.utils import Utils
+from src.models.detector import Detector
 import albumentations as alb
 import albumentations.pytorch
 

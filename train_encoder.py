@@ -1,25 +1,25 @@
 import os
-from config.config import Config
+from src.config.config import Config
 import torch
 Config.set_environment()
 
 import pytorch_lightning as pl
 from pytorch_lightning import seed_everything
 
-from utils.utils import Utils
+from src.utils.utils import Utils
 import wandb
 import torch.nn as nn
 
-from losses import losses
-from metrics import metrics
+from src.losses import losses
+from src.metrics import metrics
 import numpy as np
-from dataloader.dataloaderPL import MultiModalDataModule
+from src.dataloader.dataloaderPL import MultiModalDataModule
 import torchvision
-from models.detector import Detector
+from src.models.detector import Detector
 from train_detector import DetectorLit
 import albumentations as alb
 import albumentations.pytorch
-from models.encoder_decoder import EncoderDecoder
+from src.models.encoder_decoder import EncoderDecoder
 
 # True = Speed-up but not deterministic
 torch.backends.cudnn.benchmark = True
