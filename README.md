@@ -27,7 +27,7 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install wandb==1.5.3
 
 
-# How to run
+# How to Train (Detectors/HalluciDet)
 
 
 	## For training the initial rgb model that is the baseline
@@ -37,7 +37,16 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	## Train HalluciDet
 	CUDA_VISIBLE_DEVICES=0 python train_hallucidet.py --pretrained --modality ir --detector-path ./lightning_logs/wacv2024/detector_fasterrcnn_rgb_llvip_200ep_seed123/llvip_rgb_fasterrcnn/best.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 200 --batch 8 --seed 123
 
-  
+
+# How to Eval (HalluciDet)
+
+Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet
+
+	## Eval for Faster R-CNN HalluciDet
+	CUDA_VISIBLE_DEVICES=0 python eval_hallucidet.py --pretrained --modality ir --detector-path ./checkpoints/llvip/seed123/fasterrcnn_rgb_llvip_seed123.ckpt --hallucidet-path ./checkpoints/llvip/seed123/hallucidet_llvip_seed123.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 1 --batch 8 --seed 123
+
+
+
 
 # HalluciDet Qualitative Results
 
