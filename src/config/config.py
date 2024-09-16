@@ -76,8 +76,8 @@ class Config:
         in_channels_encoder = 3
         out_channels_decoder = 3
         decoder_head = 'sigmoid'
-        load_encoder_decoder = False # load_encoder_decoder = True
-        encoder_decoder_load_path = 'lightning_logs/hallucidet/detector_fasterrcnn_hallucidet_det01reg01_seed123/llvip_ir_fasterrcnn/best.ckpt'
+        load_encoder_decoder = False
+        encoder_decoder_load_path = 'lightning_logs/wacv2024/detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_changehead_seed123/llvip_ir_fasterrcnn/best.ckpt'
 
 
     class Detector:
@@ -95,6 +95,7 @@ class Config:
 
     @staticmethod
     def argument_parser():
+        
         parser = argparse.ArgumentParser(description='HalluciDet')
 
         parser.add_argument('--dataset', type=str, default=None, help='llvip/flir')
@@ -189,6 +190,8 @@ class Config:
 
         parser.add_argument("--encoder-depth", type=int, default=5, help='Depth of the encoder 3 to 5. (default: 5)')
 
+        parser.add_argument('--hallucidet-path', type=str, required=True, help='HalluciDet Weights')
+        
         args = parser.parse_args()
 
         return args

@@ -45,10 +45,6 @@ decoder_backbone = args.decoder_backbone
 
 ext = args.ext if args.ext is not None else Config.Dataset.ext
 
-pre_train_path = None
-if Config.EncoderDecoder.load_encoder_decoder:
-    pre_train_path = args.pre_train_path if args.pre_train_path is not None else Config.EncoderDecoder.encoder_decoder_load_path
-
 LR = 0.0001 if args.lr is None else args.lr
 
 
@@ -193,7 +189,7 @@ class EncoderDecoderLit(pl.LightningModule):
 device = Config.cuda_or_cpu() if args.device is None else args.device
 
 
-model = EncoderDecoderLit.load_from_checkpoint(checkpoint_path=Config.EncoderDecoder.encoder_decoder_load_path,
+model = EncoderDecoderLit.load_from_checkpoint(checkpoint_path=args.hallucidet_path,
                                             batch_size=args.batch, 
                                             wandb_logger=wandb_logger,
                                             model_name=decoder_backbone, 
