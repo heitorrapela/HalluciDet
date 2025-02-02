@@ -14,7 +14,10 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 
 	conda create -n hallucidet python=3.8.10
 	conda activate hallucidet
-	conda install pytorch torchvision torchaudio cpuonly -c pytorch
+
+	pip install torch==1.11.0
+	pip install torchmetrics==0.6.0
+	pip install torchvision==0.12.0
 	pip install matplotlib==3.7.0
 	pip install pytorch-lightning==1.5.10.post0
 	pip install opencv-python==4.6.0.66
@@ -23,8 +26,8 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install scikit-learn==1.1.3
 	pip install pandas==1.5.3
 	pip install pycocotools
-	pip install torchmetrics==1.3.0.post0
-	pip install wandb==0.16.2
+	pip install wandb==0.19.5
+	pip install albumentations==1.3.1
 
 
 # How to Train (Detectors/HalluciDet)

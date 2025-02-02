@@ -190,7 +190,7 @@ class Config:
 
         parser.add_argument("--encoder-depth", type=int, default=5, help='Depth of the encoder 3 to 5. (default: 5)')
 
-        parser.add_argument('--hallucidet-path', type=str, required=True, help='HalluciDet Weights')
+        parser.add_argument('--hallucidet-path', type=str, help='HalluciDet Weights')
         
         args = parser.parse_args()
 

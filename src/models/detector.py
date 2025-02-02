@@ -127,15 +127,15 @@ class Detector():
         ## fcos_resnet50_fpn
         
         if(detector_name == 'fasterrcnn' or detector_name == 'fasterrcnn_resnet50_fpn'):
-            return torchvision.models.detection.fasterrcnn_resnet50_fpn(weights=pretrained)
+            return torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained)
 
         elif(detector_name == 'retinanet' or detector_name == 'retinanet_resnet50_fpn'):
-            return torchvision.models.detection.retinanet_resnet50_fpn(weights=pretrained)
+            return torchvision.models.detection.retinanet_resnet50_fpn(pretrained=pretrained)
         
         elif(detector_name == 'fcos' or detector_name == 'fcos_resnet50_fpn'):
-            return torchvision.models.detection.fcos_resnet50_fpn(weights=pretrained)
+            return torchvision.models.detection.fcos_resnet50_fpn(pretrained=pretrained)
         
         else:
             print("Model Name not found (Using fasterrcnn_resnet50_fpn")
 
-        return torchvision.models.detection.fasterrcnn_resnet50_fpn(weights=pretrained)
+        return torchvision.models.detection.fasterrcnn_resnet50_fpn(pretrained=pretrained)
