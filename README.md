@@ -15,9 +15,8 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	conda create -n hallucidet python=3.8.10
 	conda activate hallucidet
 
-	pip install torch==1.11.0
+	pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
 	pip install torchmetrics==0.6.0
-	pip install torchvision==0.12.0
 	pip install matplotlib==3.7.0
 	pip install pytorch-lightning==1.5.10.post0
 	pip install opencv-python==4.6.0.66
