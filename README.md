@@ -28,6 +28,18 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install wandb==0.19.5
 	pip install albumentations==1.3.1
 
+# Dataset preparation (Place the dataset same folder as the code for HalluciDet)
+
+	# if you have already the datastet, you can just create a symbolic link, e.g.: ln -s ./datasets/LLVIP
+	. root
+	├── datasets
+	└── HalluciDet
+
+	cd ..
+	mkdir datasets
+	ln -s ./datasets/LLVIP 
+	cd HalluciDet
+
 
 # How to Train (Detectors/HalluciDet)
 
@@ -43,6 +55,12 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 # How to Eval (HalluciDet)
 
 Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet
+
+	# You can download by git or manually with the link above (clone inside HalluciDet)
+	# This is to link the checkpoints weights to the correct folder
+	cd HalluciDet
+	git clone https://huggingface.co/heitorrapela/hallucidet/
+	ln -s hallucidet/checkpoints/ .
 
 	## Eval for Faster R-CNN HalluciDet
 	CUDA_VISIBLE_DEVICES=0 python eval_hallucidet.py --pretrained --modality ir --detector-path ./checkpoints/llvip/seed123/fasterrcnn_rgb_llvip_seed123.ckpt --hallucidet-path ./checkpoints/llvip/seed123/hallucidet_llvip_seed123.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 1 --batch 8 --seed 123
