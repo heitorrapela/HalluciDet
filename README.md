@@ -29,6 +29,7 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install albumentations==1.3.1
 	pip install timm==0.6.12
 	pip install pretrainedmodels==0.7.4
+	pip install rich
 
 # Dataset preparation (Place the dataset same folder as the code for HalluciDet)
 
@@ -56,17 +57,21 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 
 # How to Eval (HalluciDet)
 
-Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet/tree/main
+Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet/tree/main (update the --detector-path and --hallucidet-path)
 
-	# You can download by git or manually with the link above (clone inside HalluciDet)
-	# This is to link the checkpoints weights to the correct folder
-	cd HalluciDet
-	git clone https://huggingface.co/heitorrapela/hallucidet/
+	# You can download the weights manually or you can use git-lfs
+	git lfs install
+	git clone https://huggingface.co/heitorrapela/hallucidet
 	ln -s hallucidet/checkpoints/ .
+
 
 	## Eval for Faster R-CNN HalluciDet
 	CUDA_VISIBLE_DEVICES=0 python eval_hallucidet.py --pretrained --modality ir --detector-path ./checkpoints/llvip/seed123/fasterrcnn_rgb_llvip_seed123.ckpt --hallucidet-path ./checkpoints/llvip/seed123/hallucidet_llvip_seed123.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 1 --batch 8 --seed 123
 
+	# You should get something like:
+	RGB Detector on IR  AP@50:  69.75
+	RGB Detector on RGB AP@50:  76.86
+	HalluciDet   on IR  AP@50:  90.57
 
 
 
@@ -89,7 +94,7 @@ Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet
 [![Talk at LIVIA](https://img.youtube.com/vi/spH6mHMHapw/0.jpg)](https://youtu.be/spH6mHMHapw)
 
 
-# Cite our work
+# Cite our work (We have some follow-up works as well)
 
 	@inproceedings{medeiros2024hallucidet,
 	title={HalluciDet: Hallucinating RGB Modality for Person Detection Through Privileged Information},
@@ -99,6 +104,22 @@ Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet
 	year={2024}
 	}
 
+	@inproceedings{medeiros2024modality,
+	title={Modality translation for object detection adaptation without forgetting prior knowledge},
+	author={Medeiros, Heitor Rapela and Aminbeidokhti, Masih and Pe{\~n}a, Fidel Alejandro Guerrero and Latortue, David and Granger, Eric and Pedersoli, Marco},
+	booktitle={European Conference on Computer Vision},
+	pages={51--68},
+	year={2024},
+	organization={Springer}
+	}
+
+
+	@article{medeiros2024visual,
+	title={Visual Modality Prompt for Adapting Vision-Language Object Detectors},
+	author={Medeiros, Heitor R and Belal, Atif and Muralidharan, Srikanth and Granger, Eric and Pedersoli, Marco},
+	journal={arXiv preprint arXiv:2412.00622},
+	year={2024}
+	}
 
 # References
 

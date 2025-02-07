@@ -1,3 +1,6 @@
+import sys
+sys.path.append("./src/")
+sys.path.append("./src/segmentation_models/")
 import os
 from src.config.config import Config
 import torch
@@ -173,6 +176,10 @@ class EncoderDecoderLit(pl.LightningModule):
                         'test/metrics/map_hall': map_hall,
                         'test/metrics/map_ir': map_ir,
                     })
+        
+        print("RGB Detector on IR  AP@50: ", round(map_ir['map_50'].detach().cpu().numpy()[0] * 100, 2))
+        print("RGB Detector on RGB AP@50: ", round(map_rgb['map_50'].detach().cpu().numpy()[0] * 100, 2))
+        print("HalluciDet   on IR  AP@50: ", round(map_hall['map_50'].detach().cpu().numpy()[0] * 100, 2))
 
 
     def configure_optimizers(self):
