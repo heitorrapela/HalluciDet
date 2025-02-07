@@ -15,7 +15,7 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	conda create -n hallucidet python=3.8.10
 	conda activate hallucidet
 
-	# I recommend install each one manually, cu113 have some problems with pip in the requirements.txt
+	# I recommend installing each one manually; cu113 has some problems with pip in the requirements.txt
 	pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
 	pip install torchmetrics==0.6.0
 	pip install matplotlib==3.7.0
@@ -32,9 +32,9 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install pretrainedmodels==0.7.4
 	pip install rich
 
-# Dataset preparation (Place the dataset same folder as the code for HalluciDet)
+# Dataset preparation (Place the dataset in the same folder as the code for HalluciDet)
 
-	# if you have already the datastet, you can just create a symbolic link, e.g.: ln -s ./datasets/LLVIP
+	# If you already have the dataset, you can just create a symbolic link, e.g., ln -s ./datasets/LLVIP
 	. root
 	├── datasets
 	└── HalluciDet
@@ -125,4 +125,4 @@ Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet
 # References
 
 
-Really thanks for the great open source community that provided good libraries.
+Thanks to the great open-source community that provided good libraries.
