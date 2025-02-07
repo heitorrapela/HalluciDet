@@ -15,6 +15,7 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	conda create -n hallucidet python=3.8.10
 	conda activate hallucidet
 
+	# I recommend install each one manually, cu113 have some problems with pip in the requirements.txt
 	pip install torch==1.11.0+cu113 torchvision==0.12.0+cu113 torchaudio==0.11.0 --extra-index-url https://download.pytorch.org/whl/cu113
 	pip install torchmetrics==0.6.0
 	pip install matplotlib==3.7.0
@@ -51,7 +52,7 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	## This is the seed123 result for the fasterrcnn on llvip dataset
 	CUDA_VISIBLE_DEVICES=0 python train_detector.py --pretrained --wandb-project wacv2024 --wandb-name detector_fasterrcnn_rgb_llvip_200ep_seed123 --detector fasterrcnn --modality rgb --dataset llvip --epochs 200 --batch 16 --seed 123
 
-	## Train HalluciDet
+	## Train HalluciDet (Check if you are loading the correct path for the detector)
 	CUDA_VISIBLE_DEVICES=0 python train_hallucidet.py --pretrained --modality ir --detector-path ./lightning_logs/wacv2024/detector_fasterrcnn_rgb_llvip_200ep_seed123/llvip_rgb_fasterrcnn/best.ckpt --wandb-project wacv2024 --wandb-name detector_fasterrcnn_hallucidet_det01reg01_llvip_200ep_seed123 --detector fasterrcnn --dataset llvip --epochs 200 --batch 8 --seed 123
 
 
