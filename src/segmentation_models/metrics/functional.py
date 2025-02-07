@@ -8,7 +8,7 @@ Example:
 
     .. code-block:: python
 
-        import segmentation_models_pytorch as smp
+        import segmentation_models as smp
 
         # lets assume we have multilabel prediction for 3 classes
         output = torch.rand([10, 3, 256, 256])

@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from segmentation_models_pytorch.base import modules as md
+from segmentation_models.base import modules as md
 
 def upsample_deterministic(x,upscale):
     return x[:, :, :, None, :, None].expand(-1, -1, -1, upscale, -1, upscale).reshape(x.size(0), x.size(1), x.size(2)*upscale, x.size(3)*upscale)

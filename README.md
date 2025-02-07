@@ -27,6 +27,8 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 	pip install pycocotools
 	pip install wandb==0.19.5
 	pip install albumentations==1.3.1
+	pip install timm==0.6.12
+	pip install pretrainedmodels==0.7.4
 
 # Dataset preparation (Place the dataset same folder as the code for HalluciDet)
 
@@ -54,7 +56,7 @@ Recently, this work was also accepted as an extended abstract in the [LatinX in 
 
 # How to Eval (HalluciDet)
 
-Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet
+Download the pre-trained weights: https://huggingface.co/heitorrapela/hallucidet/tree/main
 
 	# You can download by git or manually with the link above (clone inside HalluciDet)
 	# This is to link the checkpoints weights to the correct folder
