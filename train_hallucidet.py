@@ -14,6 +14,7 @@ import wandb
 import torch.nn as nn
 
 from src.metrics import metrics
+from src.losses import losses
 import numpy as np
 from src.dataloader.dataloaderPL import MultiModalDataModule
 import torchvision
